@@ -50,6 +50,22 @@ CSRF_TRUSTED_ORIGINS = config(
     cast=csv_list,
 )
 
+CORS_ALLOWED_ORIGINS = config(
+    'DJANGO_CORS_ALLOWED_ORIGINS',
+    default=','.join([
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'https://ata-gideoes-frontend.vercel.app',
+    ]),
+    cast=csv_list,
+)
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^https://ata-gideoes-frontend.*\.vercel\.app$',
+]
+
 
 # Application definition
 
@@ -168,11 +184,4 @@ REST_FRAMEWORK = {
 
 
 # CORS
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    'https://ata-gideoes.vercel.app',
-]
 
