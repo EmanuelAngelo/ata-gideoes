@@ -14,6 +14,10 @@ from pathlib import Path
 
 from decouple import config
 
+
+def csv_list(value: str) -> list[str]:
+    return [item.strip() for item in value.split(',') if item.strip()]
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +31,24 @@ SECRET_KEY = config('DJANGO_SECRET_KEY', default='django-insecure-change-me')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',') if s.strip()])
+default_allowed_hosts = [
+    'localhost',
+    '127.0.0.1',
+    'ata-gideoes.vercel.app',
+    '.vercel.app',
+]
+
+ALLOWED_HOSTS = config(
+    'DJANGO_ALLOWED_HOSTS',
+    default=','.join(default_allowed_hosts),
+    cast=csv_list,
+)
+
+CSRF_TRUSTED_ORIGINS = config(
+    'DJANGO_CSRF_TRUSTED_ORIGINS',
+    default='https://ata-gideoes.vercel.app,https://*.vercel.app',
+    cast=csv_list,
+)
 
 
 # Application definition
@@ -152,5 +173,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    'https://ata-gideoes.vercel.app',
 ]
 
